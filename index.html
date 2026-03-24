@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valterra SLAM Re-Entry App — Product Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 400;
+    color: #1a1a1a;
+    background: #f5f3ef;
+    font-size: 10.5pt;
+    line-height: 1.7;
+  }
+
+  .page {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+  }
+
+  /* COVER */
+  .cover {
+    background: #0D1117;
+    color: #fff;
+    padding: 0;
+    min-height: 320px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover-stripe {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #E8A020 0%, #F5C060 50%, #E8A020 100%);
+  }
+
+  .cover-inner {
+    padding: 3.5rem 4rem 3rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cover-bg-text {
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 14rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.03);
+    letter-spacing: -0.05em;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .cover-tag {
+    display: inline-block;
+    border: 1px solid rgba(232,160,32,0.5);
+    color: #E8A020;
+    font-size: 7.5pt;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+
+  .cover h1 span { color: #E8A020; }
+
+  .cover-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+    max-width: 480px;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .cover-meta {
+    display: flex;
+    gap: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 1.5rem;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .meta-label {
+    font-size: 7pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .meta-val {
+    font-size: 8.5pt;
+    color: rgba(255,255,255,0.75);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  /* BODY */
+  .body {
+    padding: 3.5rem 4rem;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 2.8rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e8e3d8;
+  }
+
+  .section-num {
+    width: 28px;
+    height: 28px;
+    background: #0D1117;
+    color: #E8A020;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7.5pt;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0D1117;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    margin-bottom: 0.9rem;
+    color: #2d2d2d;
+  }
+
+  /* HIGHLIGHT BOX */
+  .highlight {
+    background: #fdf8f0;
+    border-left: 3px solid #E8A020;
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+    font-size: 9.5pt;
+    color: #3a3020;
+  }
+
+  .highlight strong { color: #0D1117; }
+
+  /* PROBLEM/SOLUTION SPLIT */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: #e8e3d8;
+    border: 1px solid #e8e3d8;
+    margin: 1.2rem 0;
+  }
+
+  .split-cell {
+    background: #fff;
+    padding: 1.2rem;
+  }
+
+  .split-cell-header {
+    font-size: 7.5pt;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .split-cell.problem .split-cell-header { color: #c0392b; }
+  .split-cell.solution .split-cell-header { color: #27ae60; }
+
+  .split-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 9pt;
+    color: #333;
+  }
+
+  .split-item::before {
+    content: '—';
+    color: #999;
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+
+  /* PHASES TABLE */
+  .phases-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.2rem 0;
+    font-size: 9pt;
+  }
+
+  .phases-table th {
+    background: #0D1117;
+    color: #E8A020;
+    text-align: left;
+    padding: 0.6rem 0.9rem;
+    font-size: 7pt;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .phases-table td {
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid #f0ece4;
+    color: #2d2d2d;
+    vertical-align: top;
+  }
+
+  .phases-table tr:last-child td { border-bottom: none; }
+
+  .phases-table tr:nth-child(even) td { background: #fafaf8; }
+
+  .phase-badge {
+    display: inline-block;
+    background: #0D1117;
+    color: #E8A020;
+    font-size: 6.5pt;
+    padding: 0.15rem 0.4rem;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* FEATURE GRID */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin: 1.2rem 0;
+  }
+
+  .feature-card {
+    border: 1px solid #e8e3d8;
+    padding: 1rem 1.1rem;
+    background: #fafaf8;
+  }
+
+  .feature-icon {
+    font-size: 1.3rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .feature-title {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #0D1117;
+    margin-bottom: 0.3rem;
+  }
+
+  .feature-desc {
+    font-size: 8.5pt;
+    color: #666;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* TECH STACK */
+  .stack-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .stack-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0.9rem;
+    background: #fafaf8;
+    border: 1px solid #e8e3d8;
+    font-size: 9pt;
+  }
+
+  .stack-layer {
+    font-size: 6.5pt;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #999;
+    width: 70px;
+    flex-shrink: 0;
+  }
+
+  .stack-name {
+    font-weight: 700;
+    color: #0D1117;
+    width: 120px;
+    flex-shrink: 0;
+  }
+
+  .stack-desc {
+    color: #555;
+    font-size: 8.5pt;
+  }
+
+  /* ROADMAP */
+  .roadmap {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 1.2rem 0;
+    position: relative;
+  }
+
+  .roadmap::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    bottom: 14px;
+    width: 1px;
+    background: #e8e3d8;
+  }
+
+  .roadmap-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.75rem 0;
+  }
+
+  .roadmap-dot {
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    border: 2px solid #E8A020;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7.5pt;
+    font-weight: 700;
+    color: #E8A020;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .roadmap-content { flex: 1; padding-top: 0.3rem; }
+
+  .roadmap-title {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #0D1117;
+    margin-bottom: 0.2rem;
+  }
+
+  .roadmap-desc {
+    font-size: 8.5pt;
+    color: #666;
+    margin: 0;
+  }
+
+  .roadmap-time {
+    font-size: 7pt;
+    letter-spacing: 0.1em;
+    color: #E8A020;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-top: 0.2rem;
+  }
+
+  /* COMPLIANCE */
+  .compliance-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid #f0ece4;
+    font-size: 9pt;
+  }
+
+  .compliance-row:last-child { border-bottom: none; }
+  .compliance-key { color: #555; }
+  .compliance-val { font-weight: 600; color: #0D1117; }
+  .compliance-badge {
+    background: #e8f8ee;
+    color: #27ae60;
+    font-size: 7pt;
+    padding: 0.15rem 0.5rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  /* FOOTER */
+  .doc-footer {
+    background: #0D1117;
+    color: rgba(255,255,255,0.35);
+    padding: 1.2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 7.5pt;
+    letter-spacing: 0.05em;
+  }
+
+  .doc-footer strong { color: #E8A020; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-stripe"></div>
+    <div class="cover-bg-text">SLAM</div>
+    <div class="cover-inner">
+      <div class="cover-tag">Product Overview · Confidential</div>
+      <h1>Valterra <span>SLAM</span><br>Re-Entry App</h1>
+      <div class="cover-sub">A digital safety procedure platform for underground re-entry management at Unki Mine — replacing paper-based SLAM forms with a guided, auditable, mobile-first application.</div>
+      <div class="cover-meta">
+        <div class="meta-item">
+          <div class="meta-label">Reference</div>
+          <div class="meta-val">UNK-MIN-MIN-PRO-0002</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Procedure Version</div>
+          <div class="meta-val">Version 6.0</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Site</div>
+          <div class="meta-val">Unki Mine · Zimbabwe</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Department</div>
+          <div class="meta-val">SHE · Mining Operations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- 1. EXECUTIVE SUMMARY -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div class="section-title">Executive Summary</div>
+      </div>
+      <p>The Valterra SLAM Re-Entry App is a purpose-built digital safety platform designed to replace the current paper-based SLAM (Stop, Look, Assess, Manage) re-entry procedure used by underground mining crews at Unki Mine following primary blasts.</p>
+      <p>The application digitizes Operational Procedure UNK-MIN-MIN-PRO-0002 (Version 6.0, last revised 2025-08-03) in its entirety — guiding Overseer Miners and their crews through all five procedural phases with real-time checklists, gas reading capture, hazard identification, a 30-minute countdown timer, and mandatory supervisor sign-off before any record is submitted.</p>
+      <div class="highlight">
+        <strong>Core purpose:</strong> Every re-entry record is timestamped, attributed to a named officer, and stored for a minimum retention period of 5 years — fully aligned with Valterra's Record Control policy and applicable legal requirements under the Mine (Management and Safety) Regulations S.I. 109 of 1990 and Explosives Regulations S.I. 72 of 1989.
+      </div>
+    </div>
+
+    <!-- 2. THE PROBLEM -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div class="section-title">The Problem with Paper</div>
+      </div>
+      <p>The current hard-copy SLAM procedure presents several operational and compliance risks that grow more significant as Valterra scales its underground operations.</p>
+
+      <div class="split">
+        <div class="split-cell problem">
+          <div class="split-cell-header">Current State — Paper Forms</div>
+          <div class="split-item">Forms are frequently completed retrospectively, not in real time</div>
+          <div class="split-item">No enforcement mechanism to ensure all checklist steps are completed in sequence</div>
+          <div class="split-item">Gas readings recorded manually with no validation or threshold alerts</div>
+          <div class="split-item">Paper records are susceptible to loss, damage, and illegibility underground</div>
+          <div class="split-item">No centralized audit trail accessible to supervisors or SHE management</div>
+          <div class="split-item">30-minute time limit for initial re-entry cannot be actively monitored</div>
+          <div class="split-item">Supervisor sign-off cannot be verified or timestamped independently</div>
+        </div>
+        <div class="split-cell solution">
+          <div class="split-cell-header">Future State — Digital App</div>
+          <div class="split-item">Procedure completed live — each step requires active confirmation before progression</div>
+          <div class="split-item">Sequential phase locking prevents steps from being skipped</div>
+          <div class="split-item">Gas readings captured digitally with limit references displayed per field</div>
+          <div class="split-item">All submissions stored securely in the cloud with full redundancy</div>
+          <div class="split-item">SHE management dashboard provides real-time visibility of all records</div>
+          <div class="split-item">Built-in 30-minute countdown timer with color-coded urgency alerts</div>
+          <div class="split-item">Digital supervisor sign-off with automatic timestamp and identity attribution</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. HOW IT WORKS -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div class="section-title">How It Works — The Five Phases</div>
+      </div>
+      <p>The application mirrors the exact structure of Procedure UNK-MIN-MIN-PRO-0002. Each phase must be completed in full before the next phase is unlocked. Critical steps — those with direct safety or legal implications — are flagged visually and cannot be bypassed.</p>
+
+      <table class="phases-table">
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Name</th>
+            <th>Key Actions</th>
+            <th>Critical Gates</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="phase-badge">9.1</span></td>
+            <td>Re-Entry Preparation</td>
+            <td>Blast token check, watch synchronization, SCADA fan confirmation, 2-hour lapse verification, ventilation flap inspection</td>
+            <td>2-hr lapse confirmed · SCADA confirmed · Re-entry time on blasting board</td>
+          </tr>
+          <tr>
+            <td><span class="phase-badge">9.2</span></td>
+            <td>Waiting Place Management</td>
+            <td>Safety Talk, Toolbox Talk sign-in, Team Talk, Attendance Register, PPE inspection, fitness for duty, duty assignment</td>
+            <td>Toolbox Talk signed · PPE inspected · All personnel fit for duty</td>
+          </tr>
+          <tr>
+            <td><span class="phase-badge">9.3</span></td>
+            <td>Initial Re-Entry</td>
+            <td>NSS Box locked to NO BLAST, barricade procedure, joint ground assessment, PCU disconnect, airflow verification, continuous gas testing, barricade installation</td>
+            <td>NSS locked · PCU disconnected · Gas tests logged · 30-min timer enforced</td>
+          </tr>
+          <tr>
+            <td><span class="phase-badge">9.4</span></td>
+            <td>Watering Down & Barring Down</td>
+            <td>Gas test at blasted end, water blast operation (minimum 15 min), barring down per UNK-MIN-MIN-PRO-0003, ground condition logging</td>
+            <td>No work under unsupported ground enforced</td>
+          </tr>
+          <tr>
+            <td><span class="phase-badge">9.5</span></td>
+            <td>Searching & Handling Blown-Out Explosives</td>
+            <td>Search for misfires and blown-out explosives, collection into Canvas/Chola bag, disposal into section explosives box, misfire reporting if applicable</td>
+            <td>Blasting Licence holder only · Misfire escalation to PRO-0067</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 4. KEY FEATURES -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div class="section-title">Key Features</div>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">⏱</div>
+          <div class="feature-title">30-Minute Countdown Timer</div>
+          <p class="feature-desc">Live timer activates at Phase 3. Color transitions from green to amber to red as time elapses. Automatic alert if limit is exceeded.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🧪</div>
+          <div class="feature-title">Gas Reading Capture</div>
+          <p class="feature-desc">Digital entry fields for CO, NO₂, O₂, and H₂S with legal threshold limits displayed. All readings stored per submission record.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚠️</div>
+          <div class="feature-title">Hazard Identification</div>
+          <p class="feature-desc">Structured hazard selection covering fumes, bad hangings, dust, blown-out explosives, ventilation issues, ground instability, and misfires.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📷</div>
+          <div class="feature-title">Photo Evidence Capture</div>
+          <p class="feature-desc">Camera integration allows miners to attach photographic evidence to specific checklist steps — creating a visual audit record for SHE review.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✍️</div>
+          <div class="feature-title">Digital Supervisor Sign-Off</div>
+          <p class="feature-desc">Mandatory sign-off step with supervisor name, digital confirmation, and automatic timestamp before any record is submitted and locked.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">SHE Management Dashboard</div>
+          <p class="feature-desc">Web-based dashboard for Safety Officers and Section Managers to review, filter, search, and export all re-entry records by date, section, or officer.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📵</div>
+          <div class="feature-title">Offline Mode</div>
+          <p class="feature-desc">Critical for underground environments where network connectivity is unreliable. Forms can be completed offline and automatically sync when signal is restored.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔐</div>
+          <div class="feature-title">Role-Based Access</div>
+          <p class="feature-desc">Overseer Miners, Shift Bosses, Safety Officers, and SHE Managers each see only what their role requires. All access is authenticated and logged.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. COMPLIANCE -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div class="section-title">Compliance & Record Control Alignment</div>
+      </div>
+      <p>The application is designed to meet the Record Control requirements specified in Section 11 of Procedure UNK-MIN-MIN-PRO-0002 and applicable Zimbabwean mining legislation.</p>
+
+      <div class="compliance-row">
+        <span class="compliance-key">Governing Procedure</span>
+        <span class="compliance-val">UNK-MIN-MIN-PRO-0002 v6.0</span>
+      </div>
+      <div class="compliance-row">
+        <span class="compliance-key">Legal Reference 1</span>
+        <span class="compliance-val">Mine (Management & Safety) Regulations S.I. 109 of 1990</span>
+      </div>
+      <div class="compliance-row">
+        <span class="compliance-key">Legal Reference 2</span>
+        <span class="compliance-val">Explosives Regulations — Statutory Instrument 72 of 1989</span>
+      </div>
+      <div class="compliance-row">
+        <span class="compliance-key">Record Retention Period</span>
+        <span class="compliance-val">5 Years (aligned with Gas Test Book and Risk Assessment requirements)</span>
+      </div>
+      <div class="compliance-row">
+        <span class="compliance-key">Storage Location</span>
+        <span class="compliance-val">Secure cloud database (Mining Control Room equivalent — electronic)</span>
+      </div>
+      <div class="compliance-row">
+        <span class="compliance-key">Record Identification</span>
+        <span class="compliance-val">Auto-generated reference number per submission with timestamp</span>
+      </div>
+      <div class="compliance-row">
+        <span class="compliance-key">Responsible for Filing</span>
+        <span class="compliance-val">Section Manager (digital equivalent)</span>
+      </div>
+      <div class="compliance-row">
+        <span class="compliance-key">Responsible for Maintenance</span>
+        <span class="compliance-val">Mine Manager (access via SHE Dashboard)</span>
+      </div>
+      <div class="compliance-row">
+        <span class="compliance-key">Misfire Escalation</span>
+        <span class="compliance-val">Integrated reference to UNK-MIN-MIN-PRO-0067</span>
+      </div>
+    </div>
+
+    <!-- 6. TECH STACK -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div class="section-title">Proposed Technology Stack</div>
+      </div>
+      <p>The application is built on modern, industry-proven technologies chosen for reliability, security, cost-effectiveness, and ease of maintenance.</p>
+
+      <div class="stack-list">
+        <div class="stack-item">
+          <div class="stack-layer">Frontend</div>
+          <div class="stack-name">React Native (Expo)</div>
+          <div class="stack-desc">Single codebase delivers native iOS and Android apps plus a web browser version — minimizing development cost and maintenance overhead.</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-layer">Database</div>
+          <div class="stack-name">Supabase (PostgreSQL)</div>
+          <div class="stack-desc">Open-source backend platform providing a structured relational database, real-time data sync, and file storage for photo evidence.</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-layer">Auth</div>
+          <div class="stack-name">Supabase Auth</div>
+          <div class="stack-desc">Role-based authentication ensuring only verified Valterra employees can access the system. Supports email, employee ID, or SSO integration.</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-layer">Offline</div>
+          <div class="stack-name">Local Storage Sync</div>
+          <div class="stack-desc">Forms saved locally on the device when underground without signal. Automatic background sync to the database when connectivity is restored.</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-layer">Dashboard</div>
+          <div class="stack-name">React Web App</div>
+          <div class="stack-desc">Browser-based SHE management dashboard. No installation required for supervisors and managers — accessible from any device on the mine network.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. ROADMAP -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">07</div>
+        <div class="section-title">Development Roadmap</div>
+      </div>
+
+      <div class="roadmap">
+        <div class="roadmap-item">
+          <div class="roadmap-dot">1</div>
+          <div class="roadmap-content">
+            <div class="roadmap-title">Prototype & Stakeholder Validation</div>
+            <p class="roadmap-desc">Interactive prototype presented to SHE team for feedback. Procedure accuracy verified against v6.0 document. UI refined based on input from Overseer Miners.</p>
+            <div class="roadmap-time">Current Stage — Complete</div>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot">2</div>
+          <div class="roadmap-content">
+            <div class="roadmap-title">Backend & Database Build</div>
+            <p class="roadmap-desc">Supabase database configured. All submission tables, gas readings, hazard records, and user authentication implemented and tested.</p>
+            <div class="roadmap-time">Phase 2 — 6 to 8 Weeks</div>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot">3</div>
+          <div class="roadmap-content">
+            <div class="roadmap-title">Photo Capture & Offline Mode</div>
+            <p class="roadmap-desc">Camera integration for evidence capture. Offline-first architecture implemented to handle underground connectivity gaps reliably.</p>
+            <div class="roadmap-time">Phase 3 — 4 to 6 Weeks</div>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot">4</div>
+          <div class="roadmap-content">
+            <div class="roadmap-title">SHE Management Dashboard</div>
+            <p class="roadmap-desc">Web dashboard for Safety Officers and Section Managers. Record search, filter by date and section, export to PDF, and compliance reporting.</p>
+            <div class="roadmap-time">Phase 4 — 4 to 5 Weeks</div>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot">5</div>
+          <div class="roadmap-content">
+            <div class="roadmap-title">Pilot Testing — Single Section</div>
+            <p class="roadmap-desc">Controlled pilot deployment in one section of Unki Mine. Real usage testing alongside existing paper forms. Feedback gathered, issues resolved.</p>
+            <div class="roadmap-time">Phase 5 — 4 Weeks</div>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot">6</div>
+          <div class="roadmap-content">
+            <div class="roadmap-title">Full Mine Rollout</div>
+            <p class="roadmap-desc">Deployment across all sections. Training for all Overseer Miners, Shift Bosses, and SHE personnel. Paper forms formally retired.</p>
+            <div class="roadmap-time">Phase 6 — Months 6 to 9</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. VALUE PROPOSITION -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">08</div>
+        <div class="section-title">Value to Valterra</div>
+      </div>
+      <p>Beyond operational efficiency, the SLAM Re-Entry App delivers measurable value across three dimensions critical to Valterra's mining operations:</p>
+
+      <div class="highlight">
+        <strong>Safety:</strong> Guided sequential checklists eliminate the risk of steps being skipped under time pressure. Real-time gas readings with threshold references give crews immediate situational awareness. The 30-minute timer enforces the procedural time limit that is currently unenforceable on paper.
+      </div>
+      <div class="highlight">
+        <strong>Compliance:</strong> Every submission creates an immutable, timestamped digital record. In the event of a safety incident, investigation, or regulatory audit, Valterra has a complete, searchable history of every re-entry conducted — who performed it, what was found, and who signed off.
+      </div>
+      <div class="highlight">
+        <strong>Operational Intelligence:</strong> Aggregated data across all sections and shifts enables SHE management to identify patterns — recurring hazard types, sections with frequent gas exceedances, or teams with incomplete compliance. This insight is impossible with paper records.
+      </div>
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div><strong>Valterra Platinum</strong> · Unki Mine · SLAM Re-Entry App</div>
+    <div>REF: UNK-MIN-MIN-PRO-0002 · Version 6.0 · <strong>CONFIDENTIAL</strong></div>
+  </div>
+
+</div><!-- /page -->
+</body>
+</html>
